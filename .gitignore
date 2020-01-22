@@ -1,0 +1,12 @@
+/vendor
+/.idea
+/.vscode
+/.vagrant
+.env
+
+# hero-cli specific
+recipes.yml
+
+.php_cs.cache
+
+builds/

@@ -1,0 +1,68 @@
+composer:
+  - command: "composer install"
+    environment: docker
+    show_output: true
+assets:
+  - command: "./buildHook.sh {localProjectPath} --continue"
+    environment: local
+    path: "{localProjectPath}"
+    show_output: true
+ide-helpers:
+  - command: "./artisan ide-helper:generate"
+    environment: docker
+    show_output: false
+  - command: "./artisan ide-helper:meta"
+    environment: docker
+    show_output: false
+  - command: "rm -f _ide_helper_models.php"
+    environment: docker
+    show_output: false
+migrate:
+  - command: "./artisan migrate"
+    environment: docker
+    show_output: true
+fresh:
+  - command: "./artisan migrate:fresh --seed"
+    environment: docker
+    show_output: true
+
+update:
+  - command: "hero recipe composer"
+    environment: local
+    path: "{localProjectPath}"
+    show_output: true
+  - command: "hero recipe migrate"
+    environment: local
+    path: "{localProjectPath}"
+    show_output: true
+  - command: "hero recipe ide-helpers"
+    environment: local
+    path: "{localProjectPath}"
+    show_output: false
+  - command: "hero recipe assets"
+    environment: local
+    path: "{localProjectPath}"
+    show_output: true
+update-fresh:
+  - command: "hero recipe composer"
+    environment: local
+    path: "{localProjectPath}"
+    show_output: true
+  - command: "hero recipe fresh"
+    environment: local
+    path: "{localProjectPath}"
+    show_output: true
+  - command: "hero recipe ide-helpers"
+    environment: local
+    path: "{localProjectPath}"
+    show_output: false
+  - command: "hero recipe assets"
+    environment: local
+    path: "{localProjectPath}"
+    show_output: true
+
+vue:
+  - command: "yarn run dev"
+    environment: local
+    path: "/home/username/my-vue-project"
+    show_output: true

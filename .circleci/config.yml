@@ -1,0 +1,63 @@
+version: 2
+
+defaults: &defaults
+  working_directory: /root/hero-cli
+  docker:
+    - image: johanvanhelden/circleci-laravel:latest
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - run:
+          name: Fix Composer globally
+          command: echo 'export PATH=/root/.composer/vendor/bin/:$PATH' >> $BASH_ENV
+
+      - checkout
+
+      - run:
+          name: Prepare the environment file
+          command: cp ./.circleci/.env.circleci ./.env && cp ./.circleci/.env.circleci ./.env.testing
+
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.lock" }}-{{ arch }}
+      - run: composer install -n --prefer-dist
+      - save_cache:
+          key: composer-v1-{{ checksum "composer.lock" }}-{{ arch }}
+          paths:
+              - vendor
+
+      - run:
+          name: Code Validation
+          command: ./.circleci/scripts/validation.sh
+
+      - run:
+          name: Build the binary
+          command: php ./hero app:build hero -n
+
+      - persist_to_workspace:
+          root: /root
+          paths:
+            - hero-cli
+
+  feature_tests:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /root
+      - run:
+          name: Initialize the database
+          command: ./.circleci/scripts/initialize-database.sh
+      - run:
+          name: Run fresh tests
+          command: composer test
+
+workflows:
+    version: 2
+    build-test-and-deploy:
+      jobs:
+        - build
+        - feature_tests:
+            requires:
+              - build

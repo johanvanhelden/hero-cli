@@ -1,0 +1,49 @@
+{
+    "name": "johanvanhelden/hero-cli",
+    "description": "A helper tool for Dockerhero",
+    "homepage": "https://laravel-zero.com",
+    "type": "project",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/johanvanhelden/hero-cli/issues",
+        "source": "https://github.com/johanvanhelden/hero-cli"
+    },
+    "require": {
+        "php": "^7.2",
+        "laravel-zero/framework": "^6.0",
+        "symfony/process": "^4.4",
+        "symfony/yaml": "^5.1"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.0",
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "@php application app:rename"
+        ],
+        "test": [
+            "./vendor/bin/phpunit --testsuite Feature"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "bin": [
+        "hero"
+    ]
+}
