@@ -52,6 +52,9 @@ class RecipeCommand extends Command
         $this->info('Running the "' . $this->recipeName . '" recipe for ' . $this->projectName);
 
         $commandsToRun = $this->getCommandsToRun();
+        if (!$commandsToRun) {
+            return;
+        }
 
         if ($this->isDockerheroNeededForACommand($commandsToRun) && !$this->isDockerheroRunning()) {
             $this->error('Dockerhero is currently not running');
