@@ -5,7 +5,6 @@ composer:
 assets:
   - command: "./buildHook.sh {localProjectPath} --continue"
     environment: local
-    path: "{localProjectPath}"
     show_output: true
 ide-helpers:
   - command: "./artisan ide-helper:generate"
@@ -29,36 +28,28 @@ fresh:
 update:
   - command: "hero recipe composer"
     environment: local
-    path: "{localProjectPath}"
     show_output: true
   - command: "hero recipe migrate"
     environment: local
-    path: "{localProjectPath}"
     show_output: true
   - command: "hero recipe ide-helpers"
     environment: local
-    path: "{localProjectPath}"
     show_output: false
   - command: "hero recipe assets"
     environment: local
-    path: "{localProjectPath}"
     show_output: true
 update-fresh:
   - command: "hero recipe composer"
     environment: local
-    path: "{localProjectPath}"
     show_output: true
   - command: "hero recipe fresh"
     environment: local
-    path: "{localProjectPath}"
     show_output: true
   - command: "hero recipe ide-helpers"
     environment: local
-    path: "{localProjectPath}"
     show_output: false
   - command: "hero recipe assets"
     environment: local
-    path: "{localProjectPath}"
     show_output: true
 
 vue:

@@ -56,6 +56,10 @@ By default an exception will be thrown if an error occurs during a command's exe
 By default the output of the commands will be hidden. To view the output, add
 `show_output: true` to the recipe's command.
 
+### Customize the path for a local command
+By default the local command will be executed in the project directory. To customize the path, add
+`path: "/home/username/my-custom/path/"` to the recipe's command.
+
 ## Project setup
 A command is included to automatically setup a project for the first time. Simply run: 
 
