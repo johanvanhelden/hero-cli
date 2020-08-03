@@ -79,5 +79,8 @@ return [
         LaravelZero\Framework\Commands\InstallCommand::class,
         LaravelZero\Framework\Commands\RenameCommand::class,
         LaravelZero\Framework\Commands\MakeCommand::class,
+        LaravelZero\Framework\Commands\StubPublishCommand::class,
+
+        NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand::class,
     ],
 ];

@@ -10,6 +10,7 @@
     },
     "require": {
         "php": "^7.2",
+        "laminas/laminas-text": "^2.7",
         "laravel-zero/framework": "^7.0",
         "symfony/process": "^5.1",
         "symfony/yaml": "^5.2"
