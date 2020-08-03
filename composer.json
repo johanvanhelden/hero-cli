@@ -1,7 +1,7 @@
 {
     "name": "johanvanhelden/hero-cli",
     "description": "A helper tool for Dockerhero",
-    "homepage": "https://laravel-zero.com",
+    "homepage": "https://github.com/johanvanhelden",
     "type": "project",
     "license": "MIT",
     "support": {
