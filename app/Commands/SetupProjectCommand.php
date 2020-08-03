@@ -39,7 +39,7 @@ class SetupProjectCommand extends Command
 
         $this->setEnvFile();
 
-        $dotenv = Dotenv::create(Project::localPath($this->projectName));
+        $dotenv = Dotenv::createImmutable([Project::localPath($this->projectName)]);
         $dotenv->load();
 
         $this->createDatabaseUser();
@@ -147,7 +147,7 @@ class SetupProjectCommand extends Command
     private function setEnvFile(): void
     {
         if (File::exists(Project::localPath($this->projectName) . '/.env')) {
-            $overwrite = $this->choice('A current .env file has been found, overwrite?', ['yes', 'no'], 0);
+            $overwrite = $this->choice('A current .env file has been found, overwrite?', ['no', 'yes'], 'no');
 
             if ($overwrite == 'no') {
                 $this->info('Not overwriting the .env file.');

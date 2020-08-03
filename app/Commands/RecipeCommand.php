@@ -17,25 +17,16 @@ class RecipeCommand extends Command
 {
     use SendsNotifications;
 
-    /**
-     * The signature of the command.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $signature = 'recipe {recipe} {project?}';
 
-    /**
-     * The description of the command.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $description = 'Run\'s a given recipe for a given project';
 
-    /**
-     * The name of the project.
-     *
-     * @var string
-     */
+    /** @var string */
+    private $recipeName;
+
+    /** @var string */
     private $projectName;
 
     public function handle(): void
@@ -156,7 +147,6 @@ class RecipeCommand extends Command
 
             default:
                 throw new Exception('Unable to handle the command for the ' . $environment . ' environment');
-                break;
         }
     }
 

@@ -26,11 +26,14 @@ jobs:
       - save_cache:
           key: composer-v1-{{ checksum "composer.lock" }}-{{ arch }}
           paths:
-              - vendor
+            - vendor
 
       - run:
           name: Code Validation
           command: ./.circleci/scripts/validation.sh
+      - run:
+          name: Code Analysis
+          command: ./.circleci/scripts/code-analysis.sh
 
       - run:
           name: Build the binary
@@ -54,10 +57,10 @@ jobs:
           command: composer test
 
 workflows:
-    version: 2
-    build-test-and-deploy:
-      jobs:
-        - build
-        - feature_tests:
-            requires:
-              - build
+  version: 2
+  build-test-and-deploy:
+    jobs:
+      - build
+      - feature_tests:
+          requires:
+            - build
