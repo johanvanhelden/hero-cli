@@ -1,0 +1,19 @@
+<?php
+
+namespace DummyNamespace;
+
+use LaravelZero\Framework\Commands\Command;
+
+class DummyClass extends Command
+{
+    /** @var string */
+    protected $signature = 'dummy:command';
+
+    /** @var string */
+    protected $description = 'Command description';
+
+    public function handle(): void
+    {
+        //
+    }
+}
