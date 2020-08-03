@@ -4,9 +4,14 @@
 /.vagrant
 .env
 
+#builds
+builds/
+
+# validation / tests
+.php_cs.cache
+.phpunit.result.cache
+
 # hero-cli specific
 recipes.yml
 
-.php_cs.cache
 
-builds/

@@ -6,40 +6,23 @@ use App\Helpers\Process;
 use App\Helpers\Project;
 use App\Traits\SendsNotifications;
 use Dotenv\Dotenv;
-use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\Command;
 
-/**
- * Sets up a project.
- */
 class SetupProjectCommand extends Command
 {
     use SendsNotifications;
 
-    /**
-     * The signature of the command.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $signature = 'setup:project {project?}';
 
-    /**
-     * The description of the command.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $description = 'Sets up a given project';
 
     /** @var string */
     private $projectName;
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function handle(): void
     {
         $this->projectName = $this->argument('project');
         if (empty($this->projectName)) {
@@ -68,10 +51,7 @@ class SetupProjectCommand extends Command
         $this->info($finishedMessage);
     }
 
-    /**
-     * Creates the database user if it does not exist yet.
-     */
-    private function createDatabaseUser()
+    private function createDatabaseUser(): void
     {
         $dbUser = env('DB_USERNAME');
         $dbPassword = env('DB_PASSWORD');
@@ -119,10 +99,7 @@ class SetupProjectCommand extends Command
         }
     }
 
-    /**
-     * Creates the database if it does not exist yet.
-     */
-    private function createDatabase()
+    private function createDatabase(): void
     {
         $dbName = env('DB_DATABASE');
         $testsDbName = str_replace('_db', env('TESTS_DB_SUFFIX') . '_db', $dbName);
@@ -167,10 +144,7 @@ class SetupProjectCommand extends Command
         }
     }
 
-    /**
-     * Sets the environment file if not present.
-     */
-    private function setEnvFile()
+    private function setEnvFile(): void
     {
         if (File::exists(Project::localPath($this->projectName) . '/.env')) {
             $overwrite = $this->choice('A current .env file has been found, overwrite?', ['yes', 'no'], 0);
@@ -188,17 +162,5 @@ class SetupProjectCommand extends Command
             Project::localPath($this->projectName) . '/.env.example',
             Project::localPath($this->projectName) . '/.env'
         );
-    }
-
-    /**
-     * Define the command's schedule.
-     *
-     * @param Schedule $schedule
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function schedule(Schedule $schedule)
-    {
-        // $schedule->command(static::class)->everyMinute();
     }
 }

@@ -38,12 +38,7 @@ class RecipeCommand extends Command
      */
     private $projectName;
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function handle(): void
     {
         if (!$this->setAndValidateArguments()) {
             return;
@@ -52,7 +47,7 @@ class RecipeCommand extends Command
         $this->info('Running the "' . $this->recipeName . '" recipe for ' . $this->projectName);
 
         $commandsToRun = $this->getCommandsToRun();
-        if (!$commandsToRun) {
+        if (is_null($commandsToRun)) {
             return;
         }
 
@@ -72,12 +67,7 @@ class RecipeCommand extends Command
         $this->info($finishedMessage);
     }
 
-    /**
-     * Validate and sets the passed arguments.
-     *
-     * @return bool
-     */
-    private function setAndValidateArguments()
+    private function setAndValidateArguments(): bool
     {
         $this->recipeName = $this->argument('recipe');
         if (empty($this->recipeName)) {
@@ -100,46 +90,29 @@ class RecipeCommand extends Command
         return true;
     }
 
-    /**
-     * Returns a list of commands to run.
-     *
-     * @return array
-     */
-    private function getCommandsToRun()
+    private function getCommandsToRun(): ?array
     {
         $recipes = Recipe::getRecipesList();
         if (!isset($recipes[$this->recipeName])) {
             $this->error('No "' . $this->recipeName . '" recipe found');
 
-            return;
+            return null;
         }
 
         return $recipes[$this->recipeName];
     }
 
-    /**
-     * Determines if Dockerhero is running.
-     *
-     * @return bool
-     */
-    private function isDockerheroRunning()
+    private function isDockerheroRunning(): bool
     {
         $output = Process::getInstance()
             ->allowFailure(true)
             ->execute(['docker', 'inspect', '-f', '{{.State.Running}}', 'dockerhero_workspace'])
             ->getOutput();
 
-        return trim($output) == 'true';
+        return trim($output) === 'true';
     }
 
-    /**
-     * Determines if Dockerhero is needed for a command.
-     *
-     * @array $commands
-     *
-     * @return bool
-     */
-    private function isDockerheroNeededForACommand(array $commands)
+    private function isDockerheroNeededForACommand(array $commands): bool
     {
         $hasDockerCommand = array_filter($commands, function ($item) {
             return $item['environment'] == 'docker';
@@ -148,12 +121,7 @@ class RecipeCommand extends Command
         return !empty($hasDockerCommand);
     }
 
-    /**
-     * Handles the exection of a command.
-     *
-     * @param array $commandToRun
-     */
-    private function handleCommand(array $commandToRun)
+    private function handleCommand(array $commandToRun): void
     {
         $environment = $commandToRun['environment'];
         $command = Recipe::processVariables($commandToRun['command'], $this->projectName);
@@ -192,14 +160,7 @@ class RecipeCommand extends Command
         }
     }
 
-    /**
-     * Runs a docker command.
-     *
-     * @param string $command
-     * @param bool   $allowFailure
-     * @param bool   $showOutput
-     */
-    private function runDockerCommand($command, $allowFailure, $showOutput)
+    private function runDockerCommand(string $command, bool $allowFailure, bool $showOutput): void
     {
         $this->info('Running docker command "' . $command . '" for ' . $this->projectName);
 
@@ -218,15 +179,7 @@ class RecipeCommand extends Command
             ]);
     }
 
-    /**
-     * Runs a local command.
-     *
-     * @param string $command
-     * @param string $path
-     * @param bool   $allowFailure
-     * @param bool   $showOutput
-     */
-    private function runLocalCommand($command, $path, $allowFailure, $showOutput)
+    private function runLocalCommand(string $command, string $path, bool $allowFailure, bool $showOutput): void
     {
         $this->info('Running local command "' . $command . '" for ' . $this->projectName);
 

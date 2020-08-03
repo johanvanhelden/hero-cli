@@ -4,36 +4,19 @@ namespace App\Commands;
 
 use App\Helpers\Process;
 use App\Traits\SendsNotifications;
-use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
-/**
- * A command to clean up docker images and containers.
- */
 class DockerCleanupCommand extends Command
 {
     use SendsNotifications;
 
-    /**
-     * The signature of the command.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $signature = 'docker:cleanup';
 
-    /**
-     * The description of the command.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $description = 'Cleans up docker images and containers';
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function handle(): void
     {
         $this->handleContainers();
         $this->handleImages();
@@ -44,10 +27,7 @@ class DockerCleanupCommand extends Command
         $this->info($finishedMessage);
     }
 
-    /**
-     * Handles the removal of dangling containers.
-     */
-    private function handleContainers()
+    private function handleContainers(): void
     {
         $this->info('Removing all dangling containers...');
 
@@ -82,10 +62,7 @@ class DockerCleanupCommand extends Command
         $this->info('Removed all dangling containers.');
     }
 
-    /**
-     * Handles the removal of dangling images.
-     */
-    private function handleImages()
+    private function handleImages(): void
     {
         $this->info('Removing all dangling images...');
 
@@ -130,17 +107,5 @@ class DockerCleanupCommand extends Command
             ]);
 
         $this->info('Removed all dangling images.');
-    }
-
-    /**
-     * Define the command's schedule.
-     *
-     * @param Schedule $schedule
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function schedule(Schedule $schedule)
-    {
-        // $schedule->command(static::class)->everyMinute();
     }
 }

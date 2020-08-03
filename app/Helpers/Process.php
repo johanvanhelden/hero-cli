@@ -25,9 +25,7 @@ class Process
     /** @var bool */
     protected static $showOutput = false;
 
-    /**
-     * Get the instance of the process.
-     */
+    /** @return self */
     public static function getInstance()
     {
         if (self::$instance === null) {
@@ -37,11 +35,7 @@ class Process
         return self::$instance;
     }
 
-    /**
-     * Set the input property.
-     *
-     * @param string $value
-     */
+    /** @return $this */
     public function input(string $value)
     {
         self::$input = $value;
@@ -49,11 +43,7 @@ class Process
         return $this;
     }
 
-    /**
-     * Set the inDirectory property.
-     *
-     * @param string $value
-     */
+    /** @return $this */
     public function inDirectory(string $value)
     {
         self::$inDirectory = $value;
@@ -61,11 +51,7 @@ class Process
         return $this;
     }
 
-    /**
-     * Set the allowFailure property.
-     *
-     * @param bool $value
-     */
+    /** @return $this */
     public function allowFailure(bool $value = true)
     {
         self::$allowFailure = $value;
@@ -73,11 +59,7 @@ class Process
         return $this;
     }
 
-    /**
-     * Set the showOutput property.
-     *
-     * @param bool $value
-     */
+    /** @return $this */
     public function showOutput(bool $value = true)
     {
         self::$showOutput = $value;
@@ -89,12 +71,8 @@ class Process
      * Call the process and throw an exception if it fails.
      *
      * A wrapper around the symphony process to more easily customize the process for our purposes.
-     *
-     * @param array $command
-     *
-     * @return SymfonyProcess
      */
-    public function execute(array $command)
+    public function execute(array $command): SymfonyProcess
     {
         $process = new SymfonyProcess($command);
 
@@ -110,7 +88,7 @@ class Process
         }
 
         if (self::$showOutput) {
-            $process->run(function ($type, $buffer) {
+            $process->run(function ($type, $buffer): void {
                 unset($type);
 
                 echo $buffer;
