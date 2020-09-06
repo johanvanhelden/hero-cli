@@ -185,5 +185,31 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Set Up PHP and Tools
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: "7.4"
+          tools: composer:v2, phpcs, php-cs-fixer, phpmd, phpcpd
+          coverage: none
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - uses: actions/cache@v2
+        id: vendor-cache
+        with:
+          path: "./vendor"
+          key: ${{ runner.os }}-vendor-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install Composer Dependencies
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
       - name: Build the binary
         run: php ./hero app:build hero -n
