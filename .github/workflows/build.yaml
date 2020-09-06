@@ -75,19 +75,19 @@ jobs:
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Syntax Errors
-        run: find app database tests config routes -name "*.php" -print0 | xargs -0 -n1 -P8 php -l
+        run: find app tests config -name "*.php" -print0 | xargs -0 -n1 -P8 php -l
 
       - name: PHP_CodeSniffer
         run: phpcs
 
       - name: PHP-CS-Fixer
-        run: php-cs-fixer fix app database config routes tests --dry-run --diff --allow-risky=yes --config=.php_cs
+        run: php-cs-fixer fix app config tests --dry-run --diff --allow-risky=yes --config=.php_cs
 
       - name: PHPMD
         run: phpmd app text phpmd.xml
 
       - name: PHPCPD
-        run: phpcpd app database config routes
+        run: phpcpd app config
 
   security-check:
     name: Security Check
