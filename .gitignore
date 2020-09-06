@@ -3,6 +3,7 @@
 /.vscode
 /.vagrant
 .env
+.env.testing
 
 #builds
 builds/

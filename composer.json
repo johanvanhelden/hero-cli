@@ -18,7 +18,8 @@
     "require-dev": {
         "mockery/mockery": "^1.3.1",
         "nunomaduro/larastan": "^0.6.2",
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5",
+        "sensiolabs/security-checker": "^6.0"
     },
     "autoload": {
         "psr-4": {
@@ -38,6 +39,9 @@
     "scripts": {
         "post-create-project-cmd": [
             "@php application app:rename"
+        ],
+        "post-update-cmd": [
+            "@php ./vendor/sensiolabs/security-checker/security-checker security:check --ansi"
         ],
         "test": [
             "@php -r \"file_exists('.env.testing') || copy('.env.testing.example', '.env.testing');\"",
