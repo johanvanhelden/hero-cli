@@ -1,0 +1,189 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  code-analysis:
+    name: Code Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set Up PHP and Tools
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: "7.4"
+          tools: composer:v2
+          coverage: none
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - uses: actions/cache@v2
+        id: vendor-cache
+        with:
+          path: "./vendor"
+          key: ${{ runner.os }}-vendor-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install Composer Dependencies
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Static Code Analysis
+        run: ./vendor/bin/phpstan analyse --memory-limit=2G
+
+  code-style:
+    name: Code Style
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set Up PHP and Tools
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: "7.4"
+          tools: composer:v2, phpcs, php-cs-fixer, phpmd, phpcpd
+          coverage: none
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - uses: actions/cache@v2
+        id: vendor-cache
+        with:
+          path: "./vendor"
+          key: ${{ runner.os }}-vendor-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install Composer Dependencies
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Syntax Errors
+        run: find app database tests config routes -name "*.php" -print0 | xargs -0 -n1 -P8 php -l
+
+      - name: PHP_CodeSniffer
+        run: phpcs
+
+      - name: PHP-CS-Fixer
+        run: php-cs-fixer fix app database config routes tests --dry-run --diff --allow-risky=yes --config=.php_cs
+
+      - name: PHPMD
+        run: phpmd app text phpmd.xml
+
+      - name: PHPCPD
+        run: phpcpd app database config routes
+
+  security-check:
+    name: Security Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set Up PHP and Tools
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: "7.4"
+          tools: composer:v2
+          coverage: none
+
+      - name: Check Composer Packages
+        uses: symfonycorp/security-checker-action@v2
+
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: tests_db
+        ports:
+          - 13306:3306
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Initialize the Database
+        run: |
+          sudo systemctl start mysql
+          mysql --user="root" --password="root" -e "CREATE DATABASE tests_db character set UTF8mb4 collate utf8mb4_bin;"
+
+      - name: Set Up PHP and Tools
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: "7.4"
+          tools: composer:v2
+          coverage: pcov
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - uses: actions/cache@v2
+        id: vendor-cache
+        with:
+          path: "./vendor"
+          key: ${{ runner.os }}-vendor-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install Composer Dependencies
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Setup PHPUnit Environment
+        run: cp .env.testing.example .env
+
+      - name: Run PHPUnit Tests
+        run: composer test
+        env:
+          DB_HOST: localhost
+          DB_DATABASE: tests_db
+          DB_USERNAME: root
+          DB_PASSWORD: root
+
+      - name: Run Test Coverage Report
+        run: ./vendor/bin/phpunit --coverage-clover ./coverage.xml
+        env:
+          DB_HOST: localhost
+          DB_DATABASE: tests_db
+          DB_USERNAME: root
+          DB_PASSWORD: root
+
+      - name: Check Test Coverage
+        uses: johanvanhelden/gha-clover-test-coverage-check@v1
+        with:
+          percentage: "1"
+          filename: "coverage.xml"
+
+  build-binary:
+    name: Build the binary
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build the binary
+        run: php ./hero app:build hero -n
