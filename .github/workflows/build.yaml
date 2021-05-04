@@ -81,7 +81,7 @@ jobs:
         run: phpcs
 
       - name: PHP-CS-Fixer
-        run: php-cs-fixer fix app config tests --dry-run --diff --allow-risky=yes --config=.php_cs
+        run: php-cs-fixer fix app config tests --dry-run --diff --allow-risky=yes --config=.php-cs-fixer.php
 
       - name: PHPMD
         run: phpmd app text phpmd.xml

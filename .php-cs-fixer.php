@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return PhpCsFixer\Config::create()
     ->setRules([
         '@PSR2'                                     => true,
