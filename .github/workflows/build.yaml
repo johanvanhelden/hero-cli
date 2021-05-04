@@ -52,7 +52,7 @@ jobs:
         uses: shivammathur/setup-php@master
         with:
           php-version: "7.4"
-          tools: composer:v2, phpcs, php-cs-fixer, phpmd, phpcpd
+          tools: composer:v2, phpcs, php-cs-fixer:2.18.4, phpmd, phpcpd
           coverage: none
 
       - name: Get Composer Cache Directory
