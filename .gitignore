@@ -9,7 +9,7 @@
 builds/
 
 # validation / tests
-.php_cs.cache
+.php-cs-fixer.cache
 .phpunit.result.cache
 
 # hero-cli specific
