@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - nothing
 
+## 0.0.3 - 2022-02-11
+
+- PHP 8.1 build
+- Package updates
+
 ## 0.0.2 - 2020-09-06
 
 ### Added
