@@ -15,7 +15,7 @@ jobs:
       - name: Set Up PHP and Tools
         uses: shivammathur/setup-php@master
         with:
-          php-version: "8.0"
+          php-version: "8.1"
           tools: composer:v2
           coverage: none
 
@@ -51,7 +51,7 @@ jobs:
       - name: Set Up PHP and Tools
         uses: shivammathur/setup-php@master
         with:
-          php-version: "8.0"
+          php-version: "8.1"
           tools: composer:v2, phpcs, php-cs-fixer, phpmd, phpcpd
           coverage: none
 
@@ -99,7 +99,7 @@ jobs:
       - name: Set Up PHP and Tools
         uses: shivammathur/setup-php@master
         with:
-          php-version: "8.0"
+          php-version: "8.1"
           tools: composer:v2
           coverage: none
 
@@ -130,7 +130,7 @@ jobs:
       - name: Set Up PHP and Tools
         uses: shivammathur/setup-php@master
         with:
-          php-version: "8.0"
+          php-version: "8.1"
           tools: composer:v2
           coverage: pcov
 
@@ -188,7 +188,7 @@ jobs:
       - name: Set Up PHP and Tools
         uses: shivammathur/setup-php@master
         with:
-          php-version: "8.0"
+          php-version: "8.1"
           tools: composer:v2
           coverage: none
 
