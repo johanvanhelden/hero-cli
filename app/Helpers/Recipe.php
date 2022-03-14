@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\App;
 use Symfony\Component\Yaml\Yaml;
 
 class Recipe
@@ -15,6 +16,6 @@ class Recipe
 
     public static function getRecipesList(): array
     {
-        return Yaml::parseFile(base_path('recipes.yml'));
+        return Yaml::parseFile(App::basePath('recipes.yml'));
     }
 }

@@ -42,6 +42,7 @@
         ],
         "test": [
             "@php -r \"file_exists('.env.testing') || copy('.env.testing.example', '.env.testing');\"",
+            "@php -r \"file_exists('.env.testing') || copy('.env.testing.example', '.env.testing');\"",
             "./vendor/bin/phpunit --testsuite Unit",
             "./vendor/bin/phpunit --testsuite Feature"
         ],
