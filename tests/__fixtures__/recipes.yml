@@ -1,0 +1,22 @@
+composer:
+  - command: "composer install"
+    environment: docker
+    show_output: true
+assets:
+  - command: "./buildHook.sh {localProjectPath} --continue"
+    environment: local
+    show_output: true
+
+update:
+  - command: "hero recipe composer"
+    environment: local
+    show_output: true
+  - command: "hero recipe migrate"
+    environment: local
+    show_output: true
+
+vue:
+  - command: "yarn run dev"
+    environment: local
+    path: "/home/username/my-vue-project"
+    show_output: true
