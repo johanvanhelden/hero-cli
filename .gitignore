@@ -15,4 +15,5 @@ builds/
 # hero-cli specific
 recipes.yml
 
+/tests-report
 

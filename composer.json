@@ -47,7 +47,7 @@
         ],
         "test-coverage": [
             "@php -r \"file_exists('.env.testing') || copy('.env.testing.example', '.env.testing');\"",
-            "@php -d pcov.enabled=1 ./vendor/bin/phpunit --coverage-html public_html/tests-report"
+            "@php -d pcov.enabled=1 ./vendor/bin/phpunit --coverage-html tests-report"
         ]
     },
     "minimum-stability": "dev",
