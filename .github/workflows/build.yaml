@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set Up PHP and Tools
         uses: shivammathur/setup-php@master
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set Up PHP and Tools
         uses: shivammathur/setup-php@master
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set Up PHP and Tools
         uses: shivammathur/setup-php@master
@@ -104,7 +104,7 @@ jobs:
           coverage: none
 
       - name: Check Composer Packages
-        uses: symfonycorp/security-checker-action@v2
+        uses: symfonycorp/security-checker-action@v4
 
   tests:
     name: Tests
@@ -120,7 +120,7 @@ jobs:
           - 13306:3306
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Initialize the Database
         run: |
@@ -134,23 +134,7 @@ jobs:
           tools: composer:v2
           coverage: pcov
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-
-      - uses: actions/cache@v2
-        id: vendor-cache
-        with:
-          path: "./vendor"
-          key: ${{ runner.os }}-vendor-${{ hashFiles('**/composer.lock') }}
-
       - name: Install Composer Dependencies
-        if: steps.vendor-cache.outputs.cache-hit != 'true'
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Setup PHPUnit Environment
@@ -183,7 +167,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set Up PHP and Tools
         uses: shivammathur/setup-php@master
@@ -192,23 +176,7 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-
-      - uses: actions/cache@v2
-        id: vendor-cache
-        with:
-          path: "./vendor"
-          key: ${{ runner.os }}-vendor-${{ hashFiles('**/composer.lock') }}
-
       - name: Install Composer Dependencies
-        if: steps.vendor-cache.outputs.cache-hit != 'true'
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Build the binary
