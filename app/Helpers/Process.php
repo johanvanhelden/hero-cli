@@ -7,9 +7,6 @@ namespace App\Helpers;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process as SymfonyProcess;
 
-/**
- * Process helpers.
- */
 class Process
 {
     /** @var self */
