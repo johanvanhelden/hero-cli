@@ -43,7 +43,7 @@ jobs:
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Syntax Errors
-        run: find app tests config -name "*.php" -print0 | xargs -0 -n1 -P8 php -l
+        run: find app config tests -name "*.php" -print0 | xargs -0 -n1 -P8 php -l
 
       - name: PHP_CodeSniffer
         run: phpcs
