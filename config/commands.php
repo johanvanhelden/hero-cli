@@ -27,7 +27,7 @@ return [
     |
     */
 
-    'paths'   => [app_path('Commands')],
+    'paths' => [app_path('Commands')],
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
     |
     */
 
-    'add'     => [
+    'add' => [
         // ..
     ],
 
@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'hidden'  => [
+    'hidden' => [
         NunoMaduro\LaravelConsoleSummary\SummaryCommand::class,
         Symfony\Component\Console\Command\HelpCommand::class,
     ],
@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'remove'  => [
+    'remove' => [
         Illuminate\Console\Scheduling\ScheduleRunCommand::class,
         Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
         Illuminate\Foundation\Console\VendorPublishCommand::class,

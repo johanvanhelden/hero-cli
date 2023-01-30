@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'enabled'       => true,
+    'enabled' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -27,7 +27,7 @@ return [
     |
     */
 
-    'font'          => \LaravelZero\Framework\Components\Logo\FigletString::DEFAULT_FONT,
+    'font' => \LaravelZero\Framework\Components\Logo\FigletString::DEFAULT_FONT,
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
     |
     */
 
-    'outputWidth'   => 80,
+    'outputWidth' => 80,
 
     /*
     |--------------------------------------------------------------------------
@@ -68,5 +68,5 @@ return [
     |
     */
 
-    'rightToLeft'   => null,
+    'rightToLeft' => null,
 ];
